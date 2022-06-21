@@ -1,0 +1,16 @@
+export default {
+    almaraiBold: 'Almarai-Bold',
+    almaraiLight: 'Almarai-Light',
+    almaraiRegular: 'Almarai-Regular',
+    AnekBold: 'AnekMalayalam-Bold',
+    AnekExtraBold: 'AnekMalayalam-ExtraBold',
+    AnekExtraLight: 'AnekMalayalam-ExtraLight',
+    AnekMedium: 'AnekMalayalam-Medium',
+    AnekRegular: 'AnekMalayalam-Regular',
+    AnekThin: 'AnekMalayalam-Thin',
+    AnekSemiBold: 'AnekMalayalam-SemiBold',
+    poppinsRegular: 'Poppins-Regular',
+    poppinsBold: 'Poppins-Bold',
+    poppinsMedium: 'Poppins-Medium',
+    poppinsLight: 'Poppins-Light',
+}
