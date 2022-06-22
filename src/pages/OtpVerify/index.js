@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {
   StyleSheet,
   View,
@@ -11,30 +11,25 @@ import {
 } from 'react-native';
 import font from '../../../assets/static/fontName';
 import images from '../../../assets/static/images';
-// import {TextInput} from 'react-native-paper';
-import CountryCodes from '../../../assets/static/CountryCodes';
-import CountryModal from '../../componenvts/CountryModal';
 import auth from '@react-native-firebase/auth';
+import OTPTextView from 'react-native-otp-textinput';
 
-function SetupAcc(props) {
-  let [selectedCode, setSelectedCode] = useState('+91');
-  let [selectedCountry, setSelectedCountry] = useState('India');
-  let [phone, setPhone] = useState('');
-
-  const [confirm, setConfirm] = useState(null);
-
-  let [show, setShow] = useState(false);
-
-  const verifyNumber = async () => {
-    const confirmation = await auth().signInWithPhoneNumber(
-      selectedCode + phone,
-    );
-    setConfirm(confirmation);
-    console.log(confirm);
-    props.navigation.navigate('OtpScreen', {
-      otp: confirm,
-      phone: selectedCode + phone,
-    });
+function OtpScreen(props) {
+  let [otp, setOtp] = useState();
+  let otpInput = useRef(null);
+  const verifyOTP = async () => {
+    try {
+      console.log(otp);
+      let res = await props?.route?.params?.otp?.confirm(otp);
+      if (
+        res?.user?.phoneNumber &&
+        res?.user?.phoneNumber == props?.route?.params?.phone
+      ) {
+        console.log('Success');
+      }
+    } catch (err) {
+      console.log('ERR', err.message);
+    }
   };
   return (
     <View style={style.container}>
@@ -62,7 +57,7 @@ function SetupAcc(props) {
               fontFamily: font.AnekSemiBold,
               marginTop: 35,
             }}>
-            Welcome back!
+            Enter OTP
           </Text>
           <Text
             style={{
@@ -75,8 +70,17 @@ function SetupAcc(props) {
               marginTop: 15,
               opacity: 0.6,
             }}>
-            We’re so happy you’re here!
+            A OTP has been sent to your registerd mobile number
           </Text>
+          <View style={{padding: 10}}>
+            <OTPTextView
+              ref={e => (otpInput = e)}
+              inputCount="6"
+              containerStyle={{}}
+              textInputStyle={{width: 40, color: '#fff'}}
+              handleTextChange={text => setOtp(text)}
+            />
+          </View>
           <Text
             style={{
               width: '100%',
@@ -84,74 +88,47 @@ function SetupAcc(props) {
               fontSize: 15,
               paddingHorizontal: 35,
               textAlign: 'left',
-              fontFamily: font.almaraiLight,
+              fontFamily: font.AnekMedium,
+              marginTop: 15,
               opacity: 0.6,
+              textAlign: 'center',
             }}>
-            Let today be the start of something new.
+            Change Phone number
           </Text>
           <View
             style={{
               width: '100%',
-              height: 120,
               flexDirection: 'row',
-              marginTop: 10,
+              justifyContent: 'space-between',
+              paddingHorizontal: 45,
+              marginTop: 20,
             }}>
-            <Text style={style.code}>{selectedCode}</Text>
-            <View
+            <TouchableOpacity
               style={{
-                width: '55%',
-                justifyContent: 'flex-end',
-                alignItems: 'flex-start',
+                width: 80,
+                height: 50,
+                borderRadius: 4,
+                justifyContent: 'center',
               }}>
-              <TouchableOpacity
-                style={{
-                  backgroundColor: '#d4cdba',
-                  paddingHorizontal: 15,
-                  paddingVertical: 5,
-                  borderRadius: 20,
-                  marginBottom: 7,
-                }}
-                onPress={() => setShow(true)}>
-                <Text
-                  style={{
-                    color: '#000',
-                    //   fontStyle: 'italic',
-                    fontFamily: font.AnekExtraLight,
-                  }}>
-                  {selectedCountry}
-                </Text>
-              </TouchableOpacity>
-              <TextInput
-                label={'Phone number'}
-                style={style.input}
-                // placeholder="88-0898-7999"
-                keyboardType="numeric"
-                value={phone}
-                onChangeText={item => setPhone(item)}
-                placeholderTextColor={'#ccc'}
-                autoFocus={true}
-                selectionColor={'#fff'}
-              />
-            </View>
+              <Text style={{fontFamily: font.AnekSemiBold, color: '#fff'}}>
+                Resend OTP
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                width: 80,
+                height: 50,
+                backgroundColor: '#d4cdba',
+                borderRadius: 4,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              onPress={() => verifyOTP()}>
+              <Text style={{fontFamily: font.AnekSemiBold}}>Submit</Text>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            style={{
-              width: 80,
-              height: 50,
-              backgroundColor: '#d4cdba',
-              borderRadius: 4,
-              alignSelf: 'flex-end',
-              marginRight: 23,
-              //   opacity: 0.5,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-            onPress={() => verifyNumber()}>
-            <Text style={{fontFamily: font.AnekSemiBold}}>Next</Text>
-          </TouchableOpacity>
         </View>
       </View>
-      <CountryModal show={show} setShow={setShow} />
     </View>
   );
 }
@@ -196,8 +173,6 @@ const style = StyleSheet.create({
   input: {
     width: '100%',
     height: 55,
-    // backgroundColor: '#2c2667',
-    // paddingLeft: 7,
     fontSize: 32,
     marginBottom: 20,
     color: '#fff',
@@ -212,9 +187,8 @@ const style = StyleSheet.create({
     fontFamily: font.AnekMedium,
     color: '#fff',
     paddingRight: 8,
-    // marginLeft: 25,
     alignSelf: 'flex-end',
     textAlign: 'right',
   },
 });
-export default SetupAcc;
+export default OtpScreen;
