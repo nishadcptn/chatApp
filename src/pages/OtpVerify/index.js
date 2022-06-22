@@ -16,19 +16,23 @@ import OTPTextView from 'react-native-otp-textinput';
 
 function OtpScreen(props) {
   let [otp, setOtp] = useState();
+  let [errorMessage, setErrorMessage] = useState('');
   let otpInput = useRef(null);
   const verifyOTP = async () => {
     try {
-      console.log(otp);
+      setErrorMessage('');
       let res = await props?.route?.params?.otp?.confirm(otp);
       if (
         res?.user?.phoneNumber &&
         res?.user?.phoneNumber == props?.route?.params?.phone
       ) {
-        console.log('Success');
+        props.navigation.navigate('SetupProfile');
+      } else {
+        setErrorMessage('OTP has expired or invalid!');
       }
     } catch (err) {
-      console.log('ERR', err.message);
+      console.log(err.message);
+      setErrorMessage('OTP has expired or invalid!');
     }
   };
   return (
@@ -75,12 +79,30 @@ function OtpScreen(props) {
           <View style={{padding: 10}}>
             <OTPTextView
               ref={e => (otpInput = e)}
-              inputCount="6"
+              inputCount={6}
               containerStyle={{}}
               textInputStyle={{width: 40, color: '#fff'}}
               handleTextChange={text => setOtp(text)}
             />
           </View>
+          {errorMessage ? (
+            <Text
+              style={{
+                width: '100%',
+                color: 'red',
+                fontSize: 15,
+                paddingHorizontal: 45,
+                textAlign: 'left',
+                fontFamily: font.AnekMedium,
+                marginTop: 8,
+                opacity: 0.6,
+                textAlign: 'left',
+              }}>
+              {errorMessage}
+            </Text>
+          ) : (
+            <></>
+          )}
           <Text
             style={{
               width: '100%',
@@ -91,7 +113,7 @@ function OtpScreen(props) {
               fontFamily: font.AnekMedium,
               marginTop: 15,
               opacity: 0.6,
-              textAlign: 'center',
+              textAlign: 'left',
             }}>
             Change Phone number
           </Text>

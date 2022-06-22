@@ -4,6 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SetupAcc from './src/pages/SetupAcc';
 import OtpScreen from './src/pages/OtpVerify';
+import SetupProfile from './src/pages/SetupProfile';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,6 +16,13 @@ function App(props) {
           headerShown: false,
           // animation: 'none'
         }}>
+        <Stack.Screen
+          name="SetupProfile"
+          component={SetupProfile}
+          options={{
+            animation: 'none',
+          }}
+        />
         <Stack.Screen
           name="Home"
           component={Home}
@@ -37,6 +45,14 @@ function App(props) {
             animation: 'none',
           }}
         />
+
+        {/* <Stack.Screen
+          name="SetupProfile"
+          component={SetupProfile}
+          options={{
+            animation: 'none',
+          }}
+        /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );
