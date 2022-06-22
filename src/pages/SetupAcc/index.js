@@ -6,11 +6,12 @@ import {
   Image,
   Animated,
   Text,
+  TextInput,
   TouchableOpacity,
 } from 'react-native';
 import font from '../../../assets/static/fontName';
 import images from '../../../assets/static/images';
-import {TextInput} from 'react-native-paper';
+// import {TextInput} from 'react-native-paper';
 import CountryCodes from '../../../assets/static/CountryCodes';
 import CountryModal from '../../componenvts/CountryModal';
 
@@ -81,7 +82,7 @@ function SetupAcc(props) {
             <Text style={style.code}>{selectedCode}</Text>
             <View
               style={{
-                width: '50%',
+                width: '55%',
                 justifyContent: 'flex-end',
                 alignItems: 'flex-start',
               }}>
@@ -104,14 +105,16 @@ function SetupAcc(props) {
                 </Text>
               </TouchableOpacity>
               <TextInput
-                label={'phone number'}
+                label={'Phone number'}
                 style={style.input}
-                placeholder="88-0898-7999"
+                // placeholder="88-0898-7999"
                 keyboardType="numeric"
-                mode="flat"
-                outlineColor="#000"
-                activeOutlineColor="#000"
+                // mode="flat"
+                // outlineColor="#FFF"
+                // activeOutlineColor={'#FFF'}
+                placeholderTextColor={'#ccc'}
                 autoFocus={true}
+                selectionColor={'#fff'}
               />
             </View>
           </View>
@@ -122,7 +125,7 @@ function SetupAcc(props) {
               backgroundColor: '#d4cdba',
               borderRadius: 4,
               alignSelf: 'flex-end',
-              marginRight: 60,
+              marginRight: 23,
               //   opacity: 0.5,
               alignItems: 'center',
               justifyContent: 'center',
@@ -177,19 +180,24 @@ const style = StyleSheet.create({
     width: '100%',
     height: 55,
     // backgroundColor: '#2c2667',
-    // color: '#c3c1d6',
-    // borderRadius: 7,
-    paddingLeft: 7,
-    fontSize: 19,
+    // paddingLeft: 7,
+    fontSize: 32,
     marginBottom: 20,
+    color: '#fff',
+    fontWeight: '700',
+    borderBottomColor: '#fff',
+    borderBottomWidth: 2,
+    paddingBottom: 5,
   },
   code: {
-    fontSize: 70,
+    fontSize: 68,
+    width: '38%',
     fontFamily: font.AnekMedium,
     color: '#fff',
-    marginRight: 8,
-    marginLeft: 25,
+    paddingRight: 8,
+    // marginLeft: 25,
     alignSelf: 'flex-end',
+    textAlign: 'right',
   },
 });
 export default SetupAcc;
